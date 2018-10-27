@@ -12,7 +12,7 @@ class Canvas {
     this.mousePressed = false;
     this.backgroundColor = backgroundColor;
     this.color = color;
-    this.canvasName = canvasName;    
+    this.canvasName = canvasName;
   }
 
   init() {
@@ -84,12 +84,11 @@ class Canvas {
     // get the minimum bounding box around the drawing
     const mbb = this.getMinBox();
 
-    // get image data according to dpi
-    const dpi = window.devicePixelRatio;
-    const imgData = this.canvas.contextContainer.getImageData(
-      mbb.min.x * dpi, mbb.min.y * dpi,
+    //get image data according to dpi 
+    const dpi = window.devicePixelRatio
+    const imgData = this.canvas.contextContainer.getImageData(mbb.min.x * dpi, mbb.min.y * dpi,
       (mbb.max.x - mbb.min.x) * dpi, (mbb.max.y - mbb.min.y) * dpi);
-    return imgData;
+    return imgData
   }
 
   getFrame() {
@@ -106,15 +105,18 @@ class Canvas {
       const probs = this.findTopValues(pred, 5);
       const names = this.getClassNames(indices);
 
+      console.log(names);
       // set the table
-      this.setTable(names, probs);
+      // this.setTable(names, probs);
     }
   }
 
   getClassNames(indices) {
     const outp = [];
-    for (let i = 0; i < indices.length; i++) { outp[i] = this.classNames[indices[i]]; }
-    return outpl;
+    for (let i = 0; i < indices.length; i++) {
+      outp[i] = this.classNames[indices[i]];
+    }
+    return outp;
   }
 
 
@@ -122,24 +124,26 @@ class Canvas {
 load the class names
 */
   async loadDict() {
-    
-    loc = 'lib/model/class_names.txt'
+
+    var localClasses = [];
+
+    let loc = 'lib/model/class_names.txt'
     await $.ajax({
       url: loc,
       dataType: 'text',
-    }).done(success);
+    }).done(function (data) {
+      {
+        const lst = data.split(/\n/)
+        for (var i = 0; i < lst.length - 1; i++) {
+            let symbol = lst[i]
+            localClasses[i] = symbol
+        }
+      }
+    });
+    
+    this.classNames = localClasses;
   }
 
-  /*
-  load the class names
-  */
-  success(data) {
-    const lst = data.split(/\n/);
-    for (let i = 0; i < lst.length - 1; i++) {
-      const symbol = lst[i];
-      this.classNames[i] = symbol;
-    }
-  }
 
   /*
   get indices of the top probs
@@ -170,10 +174,10 @@ load the class names
   /*
   preprocess the data
   */
-  async preprocess(imgData) {
+  preprocess(imgData) {
     return tf.tidy(() => {
       //convert to a tensor 
-      let tensor = tf.fromPixels(imgData, numChannels = 1)
+      let tensor = tf.fromPixels(imgData, 1)
 
       //resize 
       const resized = tf.image.resizeBilinear(tensor, [28, 28]).toFloat()
@@ -206,6 +210,7 @@ load the class names
 
     // load the class names
     await this.loadDict();
+
   }
 
   /*
@@ -213,15 +218,15 @@ load the class names
   */
   allowDrawing() {
     this.canvas.isDrawingMode = 1;
-   document.getElementById('status').innerHTML = 'Model Loaded'; 
+    document.getElementById('status').innerHTML = 'Model Loaded';
     $('button').prop('disabled', false);
-    
+
   }
 
   /*
   clear the canvs
   */
-  erase ()  {
+  erase() {
     this.canvas.clear();
     this.canvas.backgroundColor = '#ffffff';
     this.coords = [];
@@ -30339,7 +30344,7 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 			init: function init() {
 				var self = this;
 
-				var moo = new Canvas("canvas", "orange", "#ffffff");
+				var moo = new Canvas("canvas", "#ffffff", "black");
 				moo.init();
 			}
 		}

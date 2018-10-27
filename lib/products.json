@@ -1,0 +1,142 @@
+{ "products": [
+    {
+        "name": "Baseball Bat",
+        "price": "£3.50",
+        "image": {
+            "src": "/images/sketches/baseball-bat.png"
+        }
+    },
+    {
+        "name": "Book",
+        "price": "£7",
+        "image": {
+            "src": "/images/sketches/book.png"
+        }
+    },
+    {
+        "name": "Bread",
+        "price": "£2",
+        "image": {
+            "src": "/images/sketches/bread.png"
+        }
+    },
+    {
+        "name": "Broom",
+        "price": "£5",
+        "image": {
+            "src": "/images/sketches/broom.png"
+        }
+    },
+    {
+        "name": "Chair",
+        "price": "£17",
+        "image": {
+            "src": "/images/sketches/chair.png"
+        }
+    },
+    {
+        "name": "Clock",
+        "price": "£4",
+        "image": {
+            "src": "/images/sketches/clock.png"
+        }
+    },
+    {
+        "name": "Drums",
+        "price": "£320",
+        "image": {
+            "src": "/images/sketches/drums.png"
+        }
+    },
+    {
+        "name": "Dumbbell",
+        "price": "£30",
+        "image": {
+            "src": "/images/sketches/dumbbell.png"
+        }
+    },
+    {
+        "name": "Glasses",
+        "price": "£40",
+        "image": {
+            "src": "/images/sketches/eyeglasses.png"
+        }
+    },
+    {
+        "name": "Hat",
+        "price": "£5",
+        "image": {
+            "src": "/images/sketches/hat.png"
+        }
+    },
+    {
+        "name": "Headphones",
+        "price": "£30",
+        "image": {
+            "src": "/images/sketches/headphones.png"
+        }
+    },
+    {
+        "name": "Hotdog",
+        "price": "£2.50",
+        "image": {
+            "src": "/images/sketches/hotdog.png"
+        }
+    },
+    {
+        "name": "Ladder",
+        "price": "£12",
+        "image": {
+            "src": "/images/sketches/ladder.png"
+        }
+    },
+    {
+        "name": "Laptop",
+        "price": "£300",
+        "image": {
+            "src": "/images/sketches/laptop.png"
+        }
+    },
+    {
+        "name": "Lollipop",
+        "price": "£1.50",
+        "image": {
+            "src": "/images/sketches/lollipop.png"
+        }
+    },
+    {
+        "name": "Mushroom",
+        "price": "£1",
+        "image": {
+            "src": "/images/sketches/mushroom.png"
+        }
+    },
+    {
+        "name": "Shovel",
+        "price": "£10",
+        "image": {
+            "src": "/images/sketches/shovel.png"
+        }
+    },
+    {
+        "name": "Sword",
+        "price": "£40",
+        "image": {
+            "src": "/images/sketches/sword.png"
+        }
+    },
+    {
+        "name": "Table",
+        "price": "£40",
+        "image": {
+            "src": "/images/sketches/table.png"
+        }
+    },
+    {
+        "name": "Tennis Racquet",
+        "price": "£4",
+        "image": {
+            "src": "/images/sketches/tennis-racquet.png"
+        }
+    }
+]}

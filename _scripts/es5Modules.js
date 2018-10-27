@@ -740,7 +740,7 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 			init: function init() {
 				var self = this;
 
-				var moo = new Canvas("canvas", "orange", "#ffffff");
+				var moo = new Canvas("canvas", "#ffffff", "black");
 				moo.init();
 			}
 		}
