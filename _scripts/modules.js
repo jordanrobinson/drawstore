@@ -756,6 +756,8 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 		drawStore: {
 			init: function() {
 				const self = this;
+
+				document.getElementById("prediction").classList.add('hidden');
 				
 				const moo = new Canvas("canvas","#ffffff","black");
 				moo.init();
@@ -766,8 +768,10 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 					event.preventDefault();
 
 					moo.erase();
-					document.querySelector(".prediction").classList.add('hidden');
 				});
+
+				// console.log(moo.canvas);
+				// moo.canvas.width = 400;
 			}
 		}
 	});

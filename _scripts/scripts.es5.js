@@ -18,7 +18,7 @@ class Canvas {
   init() {
     this.start('en');
     this.canvas = window._canvas = new fabric.Canvas(this.canvasName);
-    this.canvas.backgroundColor = this.backgroundColor;
+    this.canvas.backgroundColor = "#ffffff";
     this.canvas.isDrawingMode = 0;
     this.canvas.freeDrawingBrush.color = this.color;
     this.canvas.freeDrawingBrush.width = 10;
@@ -30348,6 +30348,8 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 			init: function init() {
 				var self = this;
 
+				document.getElementById("prediction").classList.add('hidden');
+
 				var moo = new Canvas("canvas", "#ffffff", "black");
 				moo.init();
 
@@ -30357,8 +30359,10 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 					event.preventDefault();
 
 					moo.erase();
-					document.querySelector(".prediction").classList.add('hidden');
 				});
+
+				// console.log(moo.canvas);
+				// moo.canvas.width = 400;
 			}
 		}
 	});
