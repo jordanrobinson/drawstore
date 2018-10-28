@@ -106,8 +106,12 @@ class Canvas {
       const names = this.getClassNames(indices);
 
       console.log(names);
-      // set the table
-      // this.setTable(names, probs);
+      console.log(probs);
+
+      document.getElementById("prediction").classList.remove('hidden');
+
+      const prediction = 'Looks like maybe ' + names[0].replace('_', ' ').trim() + ', or like, ' + names[1].replace('_', ' ').trim() + ' or ' + names[2].replace('_', ' ').trim() + '?'
+      document.querySelector('.prediction > .prediction__inner').innerHTML = prediction;
     }
   }
 
@@ -218,7 +222,7 @@ load the class names
   */
   allowDrawing() {
     this.canvas.isDrawingMode = 1;
-    document.getElementById('status').innerHTML = 'Model Loaded';
+    //document.getElementById('status').innerHTML = 'Model Loaded';
     $('button').prop('disabled', false);
 
   }
@@ -30346,6 +30350,15 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 
 				var moo = new Canvas("canvas", "#ffffff", "black");
 				moo.init();
+
+				var _ClearCta = document.querySelector(".js-clear-canvas");
+
+				_ClearCta.addEventListener("click", function (event) {
+					event.preventDefault();
+
+					moo.erase();
+					document.querySelector(".prediction").classList.add('hidden');
+				});
 			}
 		}
 	});
@@ -30526,6 +30539,84 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 		_buildingBlocks.mediaBlock.init();
 	});
 })(jQuery);
+var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
+(function ($) {
+	$.extend(_buildingBlocks, {
+		recentlyBought: {
+			json: null,
+			init: function init() {
+				var self = this;
+
+				self._RecentlyBought = document.querySelectorAll(".recently-bought");
+				if (!self._RecentlyBought || self._RecentlyBought.length < 1) {
+					return;
+				}
+
+				$.getJSON("./lib/products.json", function (data) {
+					self.json = data;
+
+					var _iteratorNormalCompletion2 = true;
+					var _didIteratorError2 = false;
+					var _iteratorError2 = undefined;
+
+					try {
+						for (var _iterator2 = self._RecentlyBought[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+							var _RecentlyBought = _step2.value;
+
+							var _List = _RecentlyBought.querySelector("ul");
+							self.buildListings(_List);
+						}
+					} catch (err) {
+						_didIteratorError2 = true;
+						_iteratorError2 = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion2 && _iterator2.return) {
+								_iterator2.return();
+							}
+						} finally {
+							if (_didIteratorError2) {
+								throw _iteratorError2;
+							}
+						}
+					}
+				});
+			},
+			buildListings: function buildListings(_List) {
+				var self = this;
+
+				_List.innerHTML = '';
+
+				var used = [];
+
+				for (var i = 0; i < 3; i++) {
+					var _El = document.createElement("li");
+
+					var index = Math.floor(Math.random() * (self.json.products.length - 1 - 0 + 1)) + 0;
+					do {
+						index = Math.floor(Math.random() * (self.json.products.length - 1 - 0 + 1)) + 0;
+					} while (used.indexOf(index) > -1);
+
+					used.push(index);
+
+					var name = self.json.products[index].name;
+					var price = self.json.products[index].price;
+					var imgSrc = self.json.products[index].image.src;
+
+					var markup = '\n          <li class="rb-item">\n            <img src="' + imgSrc + '" alt="img"/>\n            <span class="title">' + name + '</span>\n            <span class="price">' + price + '</span>\n          </div>\n          ';
+
+					_El.innerHTML = markup;
+
+					_List.appendChild(_El);
+				}
+			}
+		}
+	});
+	$.subscribe('pageReady', function () {
+		_buildingBlocks.recentlyBought.init();
+	});
+})(jQuery);
+
 var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 (function ($) {
 	$.extend(_buildingBlocks, {

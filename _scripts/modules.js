@@ -758,7 +758,16 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 				const self = this;
 				
 				const moo = new Canvas("canvas","#ffffff","black");
-    		moo.init();
+				moo.init();
+				
+				const _ClearCta = document.querySelector(".js-clear-canvas");
+
+				_ClearCta.addEventListener("click", function(event) {
+					event.preventDefault();
+
+					moo.erase();
+					document.querySelector(".prediction").classList.add('hidden');
+				});
 			}
 		}
 	});
@@ -766,6 +775,7 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 		_buildingBlocks.drawStore.init();
 	});
 }(jQuery));
+
 
 var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 (function($) {
@@ -918,6 +928,72 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 		_buildingBlocks.mediaBlock.init();
 	});
 }(jQuery));
+var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
+(function($) {
+	$.extend(_buildingBlocks, {
+		recentlyBought: {
+      json: null,
+			init: function() {
+				const self = this;
+				
+				self._RecentlyBought = document.querySelectorAll(".recently-bought");
+        if (!self._RecentlyBought || self._RecentlyBought.length < 1) {
+          return;
+        }
+
+        $.getJSON(
+          "./lib/products.json",
+          function(data) {
+            self.json = data;
+
+            for (const _RecentlyBought of self._RecentlyBought) {
+              const _List = _RecentlyBought.querySelector("ul");
+              self.buildListings(_List);
+            }
+          }
+        );
+      },
+      buildListings: function(_List) {
+        const self = this;
+
+        _List.innerHTML = '';
+
+        const used = [];
+
+        for (let i = 0; i < 3; i++) {
+          const _El = document.createElement("li");
+          
+          var index = Math.floor(Math.random() * ((self.json.products.length - 1) - 0 + 1)) + 0;
+          do{
+            index = Math.floor(Math.random() * ((self.json.products.length - 1) - 0 + 1)) + 0;
+          } while (used.indexOf(index) > -1);
+          
+          used.push(index);
+
+          const name = self.json.products[index].name;
+          const price = self.json.products[index].price;
+          const imgSrc = self.json.products[index].image.src;
+          
+          const markup = `
+          <li class="rb-item">
+            <img src="${imgSrc}" alt="img"/>
+            <span class="title">${name}</span>
+            <span class="price">${price}</span>
+          </div>
+          `;
+
+          _El.innerHTML = markup;
+
+          _List.appendChild(_El);
+        }
+      }
+		}
+	});
+	$.subscribe('pageReady', function() {
+		_buildingBlocks.recentlyBought.init();
+	});
+}(jQuery));
+
 var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 (function ($) {
 	$.extend(_buildingBlocks, {

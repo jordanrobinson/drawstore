@@ -3,140 +3,147 @@
         "name": "Baseball Bat",
         "price": "£3.50",
         "image": {
-            "src": "/images/sketches/baseball-bat.png"
+            "src": "/_images/sketches/baseball-bat.png"
         }
     },
     {
         "name": "Book",
         "price": "£7",
         "image": {
-            "src": "/images/sketches/book.png"
+            "src": "/_images/sketches/book.png"
         }
     },
     {
         "name": "Bread",
         "price": "£2",
         "image": {
-            "src": "/images/sketches/bread.png"
+            "src": "/_images/sketches/bread.png"
         }
     },
     {
         "name": "Broom",
         "price": "£5",
         "image": {
-            "src": "/images/sketches/broom.png"
+            "src": "/_images/sketches/broom.png"
         }
     },
     {
         "name": "Chair",
         "price": "£17",
         "image": {
-            "src": "/images/sketches/chair.png"
+            "src": "/_images/sketches/chair.png"
         }
     },
     {
         "name": "Clock",
         "price": "£4",
         "image": {
-            "src": "/images/sketches/clock.png"
+            "src": "/_images/sketches/clock.png"
         }
     },
     {
         "name": "Drums",
         "price": "£320",
         "image": {
-            "src": "/images/sketches/drums.png"
+            "src": "/_images/sketches/drums.png"
         }
     },
     {
         "name": "Dumbbell",
         "price": "£30",
         "image": {
-            "src": "/images/sketches/dumbbell.png"
+            "src": "/_images/sketches/dumbbell.png"
         }
     },
     {
         "name": "Glasses",
         "price": "£40",
         "image": {
-            "src": "/images/sketches/eyeglasses.png"
+            "src": "/_images/sketches/eyeglasses.png"
         }
     },
     {
         "name": "Hat",
         "price": "£5",
         "image": {
-            "src": "/images/sketches/hat.png"
+            "src": "/_images/sketches/hat.png"
         }
     },
     {
         "name": "Headphones",
         "price": "£30",
         "image": {
-            "src": "/images/sketches/headphones.png"
+            "src": "/_images/sketches/headphones.png"
         }
     },
     {
         "name": "Hotdog",
         "price": "£2.50",
         "image": {
-            "src": "/images/sketches/hotdog.png"
+            "src": "/_images/sketches/hotdog.png"
         }
     },
     {
         "name": "Ladder",
         "price": "£12",
         "image": {
-            "src": "/images/sketches/ladder.png"
+            "src": "/_images/sketches/ladder.png"
         }
     },
     {
         "name": "Laptop",
         "price": "£300",
         "image": {
-            "src": "/images/sketches/laptop.png"
+            "src": "/_images/sketches/laptop.png"
         }
     },
     {
         "name": "Lollipop",
         "price": "£1.50",
         "image": {
-            "src": "/images/sketches/lollipop.png"
+            "src": "/_images/sketches/lollipop.png"
         }
     },
     {
         "name": "Mushroom",
         "price": "£1",
         "image": {
-            "src": "/images/sketches/mushroom.png"
+            "src": "/_images/sketches/mushroom.png"
         }
     },
     {
         "name": "Shovel",
         "price": "£10",
         "image": {
-            "src": "/images/sketches/shovel.png"
+            "src": "/_images/sketches/shovel.png"
         }
     },
     {
         "name": "Sword",
         "price": "£40",
         "image": {
-            "src": "/images/sketches/sword.png"
+            "src": "/_images/sketches/sword.png"
         }
     },
     {
         "name": "Table",
         "price": "£40",
         "image": {
-            "src": "/images/sketches/table.png"
+            "src": "/_images/sketches/table.png"
         }
     },
     {
         "name": "Tennis Racquet",
         "price": "£4",
         "image": {
-            "src": "/images/sketches/tennis-racquet.png"
+            "src": "/_images/sketches/tennis-racquet.png"
+        }
+    },
+    {
+        "name": "Broccoli",
+        "price": "£1.50",
+        "image": {
+            "src": "/_images/sketches/broccoli.png"
         }
     }
 ]}
