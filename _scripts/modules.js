@@ -756,6 +756,7 @@ class BasketItem {
         this.itemName = itemName;
         this.itemPrice  = ''; 
         this.canvasImage = '';
+        
       }
 }
 
@@ -764,20 +765,18 @@ class Basket {
     
     constructor() {       
         this.items = []; 
-        this.accessKey = '';
-        this.secretKey = '+';
-        this.baseUrl= 'http://webservices.amazon.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=';     
+        this.basketTotal = ''; 
       }
      
-      getAmazonSearchData(itemName){
+     
+      total(){
+          let total;
+          
+          this.items.map((item) =>{
+            total = total + item.itemPrice;
+           });
 
-        if(itemName !== ''){
-
-            let query = this.baseUrl + this.accessKey;
-
-            let searchQuery = query + '&Operation=ItemSearch&Keywords=' + itemName + '&SearchIndex=Books&Timestamp=2016-10-07T12:18:26Z&Signature=Signature';
-
-        }
+           this.basketTotal = total;
       }
 
 }
@@ -827,6 +826,7 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
                 <span class="item item--quantity">1</span>
                 <span class="item item--total">£${product.price}</span>
                 </div>
+                <span class="basket-total"><span>Total: </span>${product.basketTotal}</span>
                 `;
 
                 console.log(product);
@@ -835,6 +835,9 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
                 _buildingBlocks.checkoutBasket._BasketList.appendChild(_Item);
 
                 this.basket.items.push(product);
+
+                this.basket.total();
+
                 _buildingBlocks.checkoutBasket.itemCount = this.basket.items.length;
                 _buildingBlocks.checkoutBasket._ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
 

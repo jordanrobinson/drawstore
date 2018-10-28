@@ -752,21 +752,19 @@ var Basket = function () {
 		_classCallCheck(this, Basket);
 
 		this.items = [];
-		this.accessKey = '';
-		this.secretKey = '+';
-		this.baseUrl = 'http://webservices.amazon.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=';
+		this.basketTotal = '';
 	}
 
 	_createClass(Basket, [{
-		key: 'getAmazonSearchData',
-		value: function getAmazonSearchData(itemName) {
+		key: 'total',
+		value: function total() {
+			var total = void 0;
 
-			if (itemName !== '') {
+			this.items.map(function (item) {
+				total = total + item.itemPrice;
+			});
 
-				var query = this.baseUrl + this.accessKey;
-
-				var searchQuery = query + '&Operation=ItemSearch&Keywords=' + itemName + '&SearchIndex=Books&Timestamp=2016-10-07T12:18:26Z&Signature=Signature';
-			}
+			this.basketTotal = total;
 		}
 	}]);
 
@@ -811,7 +809,7 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 
 				var _Item = document.createElement("div");
 
-				var markup = '\n                <div class="basket__item">\n                <img src="' + product.image + '" class="item item--image" alt="item">\n                <span class="item item--name">' + product.name + '</span>\n                <span class="item item--price">\xA3' + product.price + '</span>\n                <span class="item item--quantity">1</span>\n                <span class="item item--total">\xA3' + product.price + '</span>\n                </div>\n                ';
+				var markup = '\n                <div class="basket__item">\n                <img src="' + product.image + '" class="item item--image" alt="item">\n                <span class="item item--name">' + product.name + '</span>\n                <span class="item item--price">\xA3' + product.price + '</span>\n                <span class="item item--quantity">1</span>\n                <span class="item item--total">\xA3' + product.price + '</span>\n                </div>\n                <span class="basket-total"><span>Total: </span>' + product.basketTotal + '</span>\n                ';
 
 				console.log(product);
 
@@ -819,6 +817,9 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 				_buildingBlocks.checkoutBasket._BasketList.appendChild(_Item);
 
 				this.basket.items.push(product);
+
+				this.basket.total();
+
 				_buildingBlocks.checkoutBasket.itemCount = this.basket.items.length;
 				_buildingBlocks.checkoutBasket._ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
 
