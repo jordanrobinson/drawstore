@@ -766,14 +766,13 @@ class Basket {
     constructor() {       
         this.items = []; 
         this.basketTotal = ''; 
-      }
-     
+      }     
      
       total(){
-          let total;
+          let total = 0;
           
           this.items.map((item) =>{
-            total = total + item.itemPrice;
+            total = total + item.price;
            });
 
            this.basketTotal = total;
@@ -792,7 +791,7 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 
                 self._BasketList = document.querySelector(".basket__list");
                 self._Basket = document.querySelector(".basket");
-                self._ItemCount = document.querySelector(".item-count");
+                self._ItemCount = document.querySelector(".item-count");               
 
                 const _addCta = document.querySelector(".js-add-item");
                 const _clearBasketCta = document.querySelector(".js-clear-basket");
@@ -826,18 +825,20 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
                 <span class="item item--quantity">1</span>
                 <span class="item item--total">£${product.price}</span>
                 </div>
-                <span class="basket-total"><span>Total: </span>${product.basketTotal}</span>
                 `;
+
 
                 console.log(product);
 
                 _Item.innerHTML = markup;
+                // _buildingBlocks.checkoutBasket._BasketTotal = document.querySelector('.basket-total');
                 _buildingBlocks.checkoutBasket._BasketList.appendChild(_Item);
 
                 this.basket.items.push(product);
 
-                this.basket.total();
-
+                // this.basket.total();
+                // _buildingBlocks.checkoutBasket._BasketTotal.innerHTML = this.basket.basketTotal;
+                
                 _buildingBlocks.checkoutBasket.itemCount = this.basket.items.length;
                 _buildingBlocks.checkoutBasket._ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
 

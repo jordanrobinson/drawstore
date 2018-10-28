@@ -30390,10 +30390,10 @@ var Basket = function () {
 	_createClass(Basket, [{
 		key: 'total',
 		value: function total() {
-			var total = void 0;
+			var total = 0;
 
 			this.items.map(function (item) {
-				total = total + item.itemPrice;
+				total = total + item.price;
 			});
 
 			this.basketTotal = total;
@@ -30441,16 +30441,18 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 
 				var _Item = document.createElement("div");
 
-				var markup = '\n                <div class="basket__item">\n                <img src="' + product.image + '" class="item item--image" alt="item">\n                <span class="item item--name">' + product.name + '</span>\n                <span class="item item--price">\xA3' + product.price + '</span>\n                <span class="item item--quantity">1</span>\n                <span class="item item--total">\xA3' + product.price + '</span>\n                </div>\n                <span class="basket-total"><span>Total: </span>' + product.basketTotal + '</span>\n                ';
+				var markup = '\n                <div class="basket__item">\n                <img src="' + product.image + '" class="item item--image" alt="item">\n                <span class="item item--name">' + product.name + '</span>\n                <span class="item item--price">\xA3' + product.price + '</span>\n                <span class="item item--quantity">1</span>\n                <span class="item item--total">\xA3' + product.price + '</span>\n                </div>\n                ';
 
 				console.log(product);
 
 				_Item.innerHTML = markup;
+				// _buildingBlocks.checkoutBasket._BasketTotal = document.querySelector('.basket-total');
 				_buildingBlocks.checkoutBasket._BasketList.appendChild(_Item);
 
 				this.basket.items.push(product);
 
-				this.basket.total();
+				// this.basket.total();
+				// _buildingBlocks.checkoutBasket._BasketTotal.innerHTML = this.basket.basketTotal;
 
 				_buildingBlocks.checkoutBasket.itemCount = this.basket.items.length;
 				_buildingBlocks.checkoutBasket._ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
