@@ -750,6 +750,92 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 		_buildingBlocks.alerts.init();
 	});
 }(jQuery));
+class BasketItem {
+    constructor(itemName) {
+        this.id = '';   
+        this.itemName = itemName;
+        this.itemPrice  = ''; 
+        this.canvasImage = '';
+      }
+}
+
+
+class Basket {
+    
+    constructor() {       
+        this.items = []; 
+        this.accessKey = 'AKIAIPQCK53DMK2NNG5Q';
+        this.secretKey = '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';
+        this.baseUrl= 'http://webservices.amazon.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=';     
+      }
+     
+      getAmazonSearchData(itemName){
+
+        if(itemName !== ''){
+
+            let query = this.baseUrl + this.accessKey;
+
+            let searchQuery = query + '&Operation=ItemSearch&Keywords=' + itemName + '&SearchIndex=Books&Timestamp=2016-10-07T12:18:26Z&Signature=Signature';
+
+        }
+      }
+
+}
+var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
+(function ($) {
+    $.extend(_buildingBlocks, {
+        checkoutBasket: {
+            itemCount: 0,
+            init: function () {
+                const self = this;
+                this.basket = new Basket();
+
+                const _addCta = document.querySelector(".js-add-item");
+                // const _itemCount = document.querySelector(".item-count").textContent = this.basket.items.length;
+
+                _addCta.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    self.addItem();
+                    _buildingBlocks.drawStore.canvas.erase();
+					document.querySelector(".prediction").classList.add('hidden');
+                });
+            },
+            addItem: function () {
+                let product = _buildingBlocks.drawStore.canvas.product;
+
+                const _Div = document.createElement("div");
+
+                const markup = `
+                <div class="basket__item">
+                <img src="${product.image}" class="item item--image" alt="item">
+                <span class="item item--name">${product.name}</span>
+                <span class="item item--price">£${product.price}</span>
+                <span class="item item--quantity">1</span>
+                <span class="item item--total">£${product.price}</span>
+                </div>
+                `;
+
+                let _ItemCount = document.querySelector(".item-count");
+
+                this.basket.items.push(product);
+
+                _buildingBlocks.checkoutBasket.itemCount = this.basket.items.length;
+                _ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
+
+                _Div.innerHTML = markup;
+
+                let _BasketList = document.querySelector(".basket__list");
+                _BasketList.appendChild(_Div);
+            },
+            basket: {}
+        }
+    });
+    $.subscribe('pageReady', function () {
+        _buildingBlocks.checkoutBasket.init();
+    });
+}(jQuery));
+
+
 var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 (function($) {
 	$.extend(_buildingBlocks, {
@@ -759,20 +845,19 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 
 				document.getElementById("prediction").classList.add('hidden');
 				
-				const moo = new Canvas("canvas","#ffffff","black");
-				moo.init();
+				this.canvas = new Canvas("canvas","#ffffff","black");
+				this.canvas.init();
 				
 				const _ClearCta = document.querySelector(".js-clear-canvas");
 
 				_ClearCta.addEventListener("click", function(event) {
 					event.preventDefault();
 
-					moo.erase();
+					_buildingBlocks.drawStore.canvas.erase();
+					document.querySelector(".prediction").classList.add('hidden');
 				});
-
-				// console.log(moo.canvas);
-				// moo.canvas.width = 400;
-			}
+			},
+			canvas: {}
 		}
 	});
 	$.subscribe('pageReady', function() {

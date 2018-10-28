@@ -13,11 +13,20 @@ class Canvas {
     this.backgroundColor = backgroundColor;
     this.color = color;
     this.canvasName = canvasName;
+    this.currentFrame;
   }
 
   init() {
     this.start('en');
     this.canvas = window._canvas = new fabric.Canvas(this.canvasName);
+
+    if (window.innerWidth <= 750) {
+      this.canvas.setWidth(250);
+      this.canvas.setHeight(300);
+    } else {
+      this.canvas.setWidth(700);
+      this.canvas.setHeight(500);
+    }
     this.canvas.backgroundColor = "#ffffff";
     this.canvas.isDrawingMode = 0;
     this.canvas.freeDrawingBrush.color = this.color;
@@ -33,7 +42,7 @@ class Canvas {
     });
     this.canvas.on('mouse:move', (e) => {
       this.recordCoor(e);
-    });
+    });    
   }
 
   setTable(top5, probs) {
@@ -110,8 +119,20 @@ class Canvas {
 
       document.getElementById("prediction").classList.remove('hidden');
 
-      const prediction = 'Looks like maybe ' + names[0].replace('_', ' ').trim() + ', or like, ' + names[1].replace('_', ' ').trim() + ' or ' + names[2].replace('_', ' ').trim() + '?'
+      const prediction = 'Looks like maybe an' + names[0].replace('_', ' ').trim() + ', or like, ' + names[1].replace('_', ' ').trim() + ' or ' + names[2].replace('_', ' ').trim() + '?';
       document.querySelector('.prediction > .prediction__inner').innerHTML = prediction;
+
+      this.product = names[4];
+      let canvasRender =  this.canvas.toDataURL({
+        format: 'jpeg',
+        quality: 0.8
+      });
+      this.product = new BasketItem(names[4]);
+      this.product.name = names[1]
+      this.product.image =  canvasRender;
+      this.product.price =  Math.floor(Math.random() * 150);
+
+      window.localStorage.setItem("product", this.product);           
     }
   }
 
@@ -29608,6 +29629,10 @@ if (Modernizr) {
 
 'use strict';
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 (function ($) {
 	$.extend(_buildingBlocks, {
@@ -30341,6 +30366,88 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 		_buildingBlocks.alerts.init();
 	});
 })(jQuery);
+
+var BasketItem = function BasketItem(itemName) {
+	_classCallCheck(this, BasketItem);
+
+	this.id = '';
+	this.itemName = itemName;
+	this.itemPrice = '';
+	this.canvasImage = '';
+};
+
+var Basket = function () {
+	function Basket() {
+		_classCallCheck(this, Basket);
+
+		this.items = [];
+		this.accessKey = 'AKIAIPQCK53DMK2NNG5Q';
+		this.secretKey = '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';
+		this.baseUrl = 'http://webservices.amazon.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=';
+	}
+
+	_createClass(Basket, [{
+		key: 'getAmazonSearchData',
+		value: function getAmazonSearchData(itemName) {
+
+			if (itemName !== '') {
+
+				var query = this.baseUrl + this.accessKey;
+
+				var searchQuery = query + '&Operation=ItemSearch&Keywords=' + itemName + '&SearchIndex=Books&Timestamp=2016-10-07T12:18:26Z&Signature=Signature';
+			}
+		}
+	}]);
+
+	return Basket;
+}();
+
+var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
+(function ($) {
+	$.extend(_buildingBlocks, {
+		checkoutBasket: {
+			itemCount: 0,
+			init: function init() {
+				var self = this;
+				this.basket = new Basket();
+
+				var _addCta = document.querySelector(".js-add-item");
+				// const _itemCount = document.querySelector(".item-count").textContent = this.basket.items.length;
+
+				_addCta.addEventListener("click", function (event) {
+					event.preventDefault();
+					self.addItem();
+					_buildingBlocks.drawStore.canvas.erase();
+					document.querySelector(".prediction").classList.add('hidden');
+				});
+			},
+			addItem: function addItem() {
+				var product = _buildingBlocks.drawStore.canvas.product;
+
+				var _Div = document.createElement("div");
+
+				var markup = '\n                <div class="basket__item">\n                <img src="' + product.image + '" class="item item--image" alt="item">\n                <span class="item item--name">' + product.name + '</span>\n                <span class="item item--price">\xA3' + product.price + '</span>\n                <span class="item item--quantity">1</span>\n                <span class="item item--total">\xA3' + product.price + '</span>\n                </div>\n                ';
+
+				var _ItemCount = document.querySelector(".item-count");
+
+				this.basket.items.push(product);
+
+				_buildingBlocks.checkoutBasket.itemCount = this.basket.items.length;
+				_ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
+
+				_Div.innerHTML = markup;
+
+				var _BasketList = document.querySelector(".basket__list");
+				_BasketList.appendChild(_Div);
+			},
+			basket: {}
+		}
+	});
+	$.subscribe('pageReady', function () {
+		_buildingBlocks.checkoutBasket.init();
+	});
+})(jQuery);
+
 var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 (function ($) {
 	$.extend(_buildingBlocks, {
@@ -30350,20 +30457,19 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 
 				document.getElementById("prediction").classList.add('hidden');
 
-				var moo = new Canvas("canvas", "#ffffff", "black");
-				moo.init();
+				this.canvas = new Canvas("canvas", "#ffffff", "black");
+				this.canvas.init();
 
 				var _ClearCta = document.querySelector(".js-clear-canvas");
 
 				_ClearCta.addEventListener("click", function (event) {
 					event.preventDefault();
 
-					moo.erase();
+					_buildingBlocks.drawStore.canvas.erase();
+					document.querySelector(".prediction").classList.add('hidden');
 				});
-
-				// console.log(moo.canvas);
-				// moo.canvas.width = 400;
-			}
+			},
+			canvas: {}
 		}
 	});
 	$.subscribe('pageReady', function () {
