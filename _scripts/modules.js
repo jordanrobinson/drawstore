@@ -838,7 +838,7 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
                 _buildingBlocks.checkoutBasket.itemCount = this.basket.items.length;
                 _buildingBlocks.checkoutBasket._ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
 
-                const feedback = `You've bought ${product.name}!`;
+                const feedback = `You've bought a ${product.name}!`;
                 const _Prediction = document.querySelector(".prediction");
                 document.querySelector('.prediction > .prediction__inner').innerHTML = feedback;
                 _Prediction.classList.add('shake');
