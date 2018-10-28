@@ -119,7 +119,7 @@ class Canvas {
 
       document.getElementById("prediction").classList.remove('hidden');
 
-      const prediction = 'Looks like maybe an' + names[0].replace('_', ' ').trim() + ', or like, ' + names[1].replace('_', ' ').trim() + ' or ' + names[2].replace('_', ' ').trim() + '?';
+      const prediction = 'Looks like maybe ' + names[0].replace('_', ' ').trim() + ', or like, ' + names[1].replace('_', ' ').trim() + ' or ' + names[2].replace('_', ' ').trim() + '?';
       document.querySelector('.prediction > .prediction__inner').innerHTML = prediction;
 
       this.product = names[4];
@@ -128,9 +128,12 @@ class Canvas {
         quality: 0.8
       });
       this.product = new BasketItem(names[4]);
-      this.product.name = names[1]
-      this.product.image =  canvasRender;
-      this.product.price =  Math.floor(Math.random() * 150);
+
+      let name = names[Math.floor(Math.random() * 4)];
+
+      this.product.name = name.replace('_', ' ');
+      this.product.image = canvasRender;
+      this.product.price = Math.floor(Math.random() * 150);
 
       window.localStorage.setItem("product", this.product);           
     }
@@ -30381,8 +30384,8 @@ var Basket = function () {
 		_classCallCheck(this, Basket);
 
 		this.items = [];
-		this.accessKey = 'AKIAIPQCK53DMK2NNG5Q';
-		this.secretKey = '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';
+		this.accessKey = '';
+		this.secretKey = '+';
 		this.baseUrl = 'http://webservices.amazon.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=';
 	}
 
@@ -30406,41 +30409,61 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 (function ($) {
 	$.extend(_buildingBlocks, {
 		checkoutBasket: {
+			hasItemsClass: 'basket--has-items',
 			itemCount: 0,
 			init: function init() {
 				var self = this;
 				this.basket = new Basket();
 
+				self._BasketList = document.querySelector(".basket__list");
+				self._Basket = document.querySelector(".basket");
+				self._ItemCount = document.querySelector(".item-count");
+
 				var _addCta = document.querySelector(".js-add-item");
-				// const _itemCount = document.querySelector(".item-count").textContent = this.basket.items.length;
+				var _clearBasketCta = document.querySelector(".js-clear-basket");
 
 				_addCta.addEventListener("click", function (event) {
 					event.preventDefault();
 					self.addItem();
 					_buildingBlocks.drawStore.canvas.erase();
-					document.querySelector(".prediction").classList.add('hidden');
+				});
+
+				_clearBasketCta.addEventListener("click", function (event) {
+					event.preventDefault();
+
+					self._BasketList.innerHTML = "";
+					self._Basket.classList.remove(_buildingBlocks.checkoutBasket.hasItemsClass);
+
+					self.basket.items = [];
+					_buildingBlocks.checkoutBasket._ItemCount.innerHTML = "0";
 				});
 			},
 			addItem: function addItem() {
 				var product = _buildingBlocks.drawStore.canvas.product;
 
-				var _Div = document.createElement("div");
+				var _Item = document.createElement("div");
 
 				var markup = '\n                <div class="basket__item">\n                <img src="' + product.image + '" class="item item--image" alt="item">\n                <span class="item item--name">' + product.name + '</span>\n                <span class="item item--price">\xA3' + product.price + '</span>\n                <span class="item item--quantity">1</span>\n                <span class="item item--total">\xA3' + product.price + '</span>\n                </div>\n                ';
 
-				var _ItemCount = document.querySelector(".item-count");
+				console.log(product);
+
+				_Item.innerHTML = markup;
+				_buildingBlocks.checkoutBasket._BasketList.appendChild(_Item);
 
 				this.basket.items.push(product);
-
 				_buildingBlocks.checkoutBasket.itemCount = this.basket.items.length;
-				_ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
+				_buildingBlocks.checkoutBasket._ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
 
-				_Div.innerHTML = markup;
+				var feedback = 'You\'ve bought ' + product.name + '!';
+				var _Prediction = document.querySelector(".prediction");
+				document.querySelector('.prediction > .prediction__inner').innerHTML = feedback;
+				_Prediction.classList.add('shake');
+				setTimeout(function () {
+					_Prediction.classList.remove('shake');
+				}, 1000);
 
-				var _BasketList = document.querySelector(".basket__list");
-				_BasketList.appendChild(_Div);
-			},
-			basket: {}
+				_buildingBlocks.checkoutBasket._Basket.classList.add(_buildingBlocks.checkoutBasket.hasItemsClass);
+			}
 		}
 	});
 	$.subscribe('pageReady', function () {

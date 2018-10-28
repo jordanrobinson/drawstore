@@ -119,7 +119,7 @@ class Canvas {
 
       document.getElementById("prediction").classList.remove('hidden');
 
-      const prediction = 'Looks like maybe an' + names[0].replace('_', ' ').trim() + ', or like, ' + names[1].replace('_', ' ').trim() + ' or ' + names[2].replace('_', ' ').trim() + '?';
+      const prediction = 'Looks like maybe ' + names[0].replace('_', ' ').trim() + ', or like, ' + names[1].replace('_', ' ').trim() + ' or ' + names[2].replace('_', ' ').trim() + '?';
       document.querySelector('.prediction > .prediction__inner').innerHTML = prediction;
 
       this.product = names[4];
@@ -128,9 +128,12 @@ class Canvas {
         quality: 0.8
       });
       this.product = new BasketItem(names[4]);
-      this.product.name = names[1]
-      this.product.image =  canvasRender;
-      this.product.price =  Math.floor(Math.random() * 150);
+
+      let name = names[Math.floor(Math.random() * 4)];
+
+      this.product.name = name.replace('_', ' ');
+      this.product.image = canvasRender;
+      this.product.price = Math.floor(Math.random() * 150);
 
       window.localStorage.setItem("product", this.product);           
     }
@@ -30393,8 +30396,8 @@ class Basket {
     
     constructor() {       
         this.items = []; 
-        this.accessKey = 'AKIAIPQCK53DMK2NNG5Q';
-        this.secretKey = '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';
+        this.accessKey = '';
+        this.secretKey = '+';
         this.baseUrl= 'http://webservices.amazon.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=';     
       }
      
@@ -30414,25 +30417,39 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
 (function ($) {
     $.extend(_buildingBlocks, {
         checkoutBasket: {
+            hasItemsClass: 'basket--has-items',
             itemCount: 0,
             init: function () {
                 const self = this;
                 this.basket = new Basket();
 
+                self._BasketList = document.querySelector(".basket__list");
+                self._Basket = document.querySelector(".basket");
+                self._ItemCount = document.querySelector(".item-count");
+
                 const _addCta = document.querySelector(".js-add-item");
-                // const _itemCount = document.querySelector(".item-count").textContent = this.basket.items.length;
+                const _clearBasketCta = document.querySelector(".js-clear-basket");
 
                 _addCta.addEventListener("click", function (event) {
                     event.preventDefault();
                     self.addItem();
                     _buildingBlocks.drawStore.canvas.erase();
-					document.querySelector(".prediction").classList.add('hidden');
+                });
+
+                _clearBasketCta.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    
+                    self._BasketList.innerHTML = "";
+                    self._Basket.classList.remove(_buildingBlocks.checkoutBasket.hasItemsClass);
+
+                    self.basket.items = [];
+                    _buildingBlocks.checkoutBasket._ItemCount.innerHTML = "0";
                 });
             },
             addItem: function () {
                 let product = _buildingBlocks.drawStore.canvas.product;
 
-                const _Div = document.createElement("div");
+                const _Item = document.createElement("div");
 
                 const markup = `
                 <div class="basket__item">
@@ -30444,19 +30461,25 @@ var _buildingBlocks = _buildingBlocks ? _buildingBlocks : {};
                 </div>
                 `;
 
-                let _ItemCount = document.querySelector(".item-count");
+                console.log(product);
+
+                _Item.innerHTML = markup;
+                _buildingBlocks.checkoutBasket._BasketList.appendChild(_Item);
 
                 this.basket.items.push(product);
-
                 _buildingBlocks.checkoutBasket.itemCount = this.basket.items.length;
-                _ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
+                _buildingBlocks.checkoutBasket._ItemCount.innerHTML = _buildingBlocks.checkoutBasket.itemCount;
 
-                _Div.innerHTML = markup;
+                const feedback = `You've bought ${product.name}!`;
+                const _Prediction = document.querySelector(".prediction");
+                document.querySelector('.prediction > .prediction__inner').innerHTML = feedback;
+                _Prediction.classList.add('shake');
+                setTimeout(function() {
+                    _Prediction.classList.remove('shake');
+                }, 1000);
 
-                let _BasketList = document.querySelector(".basket__list");
-                _BasketList.appendChild(_Div);
-            },
-            basket: {}
+                _buildingBlocks.checkoutBasket._Basket.classList.add(_buildingBlocks.checkoutBasket.hasItemsClass);
+            }
         }
     });
     $.subscribe('pageReady', function () {
